@@ -65,6 +65,41 @@ bot.on("message", message => {
             }
         }
     }
+    if(message.content.startWith('!warn)){
+
+	if(message.member.hasPermission('BAN_MEMBERS')){
+	
+		if(!message.mention.user.first()}return;
+		utilisateur = message.mention.user.first().id
+		
+		if(bdd['warn'][utilisateur] == 2){
+		
+			delete bdd['warn'][utilisateur]
+			message.guild.member.ban(utilisateur);
+		
+		}
+		else{
+		
+			if(!bdd['warn'][utilisateur]){
+			
+				bdd['warn'][utilisateur] = 1
+				Savebdd();
+				message.channel.send("Tu as à présent " + bdd['warn'][utilisateur] + " avertissement !";
+							
+			}
+			else{
+			
+				bdd['warn'][utilisateur]++
+				Savebdd();
+				message.channel.send("Tu as à présent " + bdd['warn'][utilisateur] + " avertissements !";
+				
+			}
+		
+		}
+	
+	}
+
+    }
     
 })
 
