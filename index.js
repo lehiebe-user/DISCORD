@@ -126,10 +126,74 @@ bot.on("message", message => {
             .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
 
         message.channel.send(monembed);
+	}
+				//LEVEL
+
+
+    if (message.content.startsWith('!lvl')) {
+        if (bdd["statut-level"] == true) {
+            bdd["statut-level"] = false
+            Savebdd();
+            return message.channel.send('Vous venez d\'arreter le système de level !');
+        }
+        else {
+            bdd["statut-level"] = true;
+            Savebdd();
+            return message.channel.send('Vous venez d\'alumer le système de level !');
+        }
+    }
+
+    if (bdd["statut-level"] == true) {
+        if (message.content.startsWith('!level')) {
+            if (!bdd["coins-utilisateurs"][message.member.id]){
+                return message.channel.send(`Nous n'avez pas encore posté de message !`);
+            } else {
+                return message.channel.send(`Vous avez ${bdd["coins-utilisateurs"][message.member.id]} points !\nEt vous êtes au level n°${bdd["level-utilisateurs"][message.member.id]}`)
+            }
+        }
+        else{
+            addRandomInt(message.member);
+            if (!bdd["coins-utilisateurs"][message.member.id]) {
+                bdd["coins-utilisateurs"][message.member.id] = Math.floor(Math.random() * (4 - 1) + 1);
+                bdd["level-utilisateurs"][message.member.id] = 0;
+                Savebdd();
+            }
+            else if (bdd["coins-utilisateurs"][message.member.id] > 100 && bdd["coins-utilisateurs"][message.member.id] < 250) {
+                if (bdd["level-utilisateurs"][message.member.id] == 0) {
+                    bdd["level-utilisateurs"][message.member.id] = 1;
+                    Savebdd();
+                    return message.channel.send(`Bravo ${message.author} tu es passé niveau 1 !`);
+                }
+            }
+            else if (bdd["coins-utilisateurs"][message.member.id] > 250 && bdd["coins-utilisateurs"][message.member.id] < 500) {
+                if (bdd["level-utilisateurs"][message.member.id] == 1) {
+                    bdd["level-utilisateurs"][message.member.id] = 2;
+                    Savebdd();
+                    return message.channel.send(`Bravo ${message.author} tu es passé niveau 2 !`);
+                }
+            }
+            else if (bdd["coins-utilisateurs"][message.member.id] > 500 && bdd["coins-utilisateurs"][message.member.id] < 1000) {
+                if (bdd["level-utilisateurs"][message.member.id] == 2) {
+                    bdd["level-utilisateurs"][message.member.id] = 3;
+                    Savebdd();
+                    return message.channel.send(`Bravo ${message.author} tu es passé niveau 3 !`);
+                }
+            }
+            else if (bdd["coins-utilisateurs"][message.member.id] > 1000) {
+                if (bdd["level-utilisateurs"][message.member.id] == 3) {
+                    bdd["level-utilisateurs"][message.member.id] = 4;
+                    Savebdd();
+                    return message.channel.send(`Bravo ${message.author} tu es passé niveau 4 !`);
+                }
+            }
+        }
     }
     
 })
-
+function addRandomInt(member) {
+    bdd["coins-utilisateurs"][member.id] = bdd["coins-utilisateurs"][member.id] + Math.floor(Math.random() * (4 - 1) + 1);
+    Savebdd();
+}
 
 function Savebdd() {
     fs.writeFile("./bdd.json", JSON.stringify(bdd, null, 4), (err) => {
