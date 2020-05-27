@@ -75,7 +75,8 @@ bot.on("message", message => {
 		if(bdd['warn'][utilisateur] == 2){
 		
 			delete bdd['warn'][utilisateur]
-			message.guild.member.cache.ban(utilisateur);
+			message.guild.member.ban(utilisateur);
+			SaveBdd();
 		
 		}
 		else{
