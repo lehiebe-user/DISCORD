@@ -25,39 +25,41 @@ bot.on("guildMemberAdd", member => {
 
 })
 
-bot.on("message", message => {
+bot.on("message", async message => {
 
-    if(message.content.startsWith("!clear")){
-    // message.delete();
-        if(message.member.hasPermission('MANAGE_MESSAGES')){
+    if (message.author.bot) return;
+
+    if (message.content.startsWith("!clear")) {
+        // message.delete();
+        if (message.member.hasPermission('MANAGE_MESSAGES')) {
 
             let args = message.content.trim().split(/ +/g);
 
-            if(args[1]){
-                if(!isNaN(args[1]) && args[1] >= 1 && args[1] <= 99){
+            if (args[1]) {
+                if (!isNaN(args[1]) && args[1] >= 1 && args[1] <= 99) {
 
                     message.channel.bulkDelete(args[1])
                     message.channel.send(`Vous avez supprimé ${args[1]} message(s)`)
                     message.channel.bulkDelete(1)
 
                 }
-                else{
+                else {
                     message.channel.send(`Vous devez indiquer une valeur entre 1 et 99 !`)
                 }
             }
-            else{
+            else {
                 message.channel.send(`Vous devez indiquer un nombre de messages a supprimer !`)
             }
         }
-        else{
+        else {
             message.channel.send(`Vous devez avoir la permission de gérer les messages pour éxécuter cette commande !`)
         }
     }
 
-    if(message.content.startsWith("!mb")){
+    if (message.content.startsWith("!mb")) {
         message.delete()
-        if(message.member.hasPermission('MANAGE_MESSAGES')){
-            if(message.content.length > 5){
+        if (message.member.hasPermission('MANAGE_MESSAGES')) {
+            if (message.content.length > 5) {
                 message_bienvenue = message.content.slice(4)
                 bdd["message-bienvenue"] = message_bienvenue
                 Savebdd()
@@ -65,47 +67,39 @@ bot.on("message", message => {
             }
         }
     }
-    if(message.content.startWith('!warn)){
+    if (message.content.startsWith("!warn")) {
+        if (message.member.hasPermission('BAN_MEMBERS')) {
 
-	if(message.member.hasPermission('BAN_MEMBERS')){
-	
-		if(!message.mention.user.first()}return;
-		utilisateur = message.mention.user.first().id
-		
-		if(bdd['warn'][utilisateur] == 2){
-		
-			delete bdd['warn'][utilisateur]
-			message.guild.member.ban(utilisateur);
-			SaveBdd();
-		
-		}
-		else{
-		
-			if(!bdd['warn'][utilisateur]){
-			
-				bdd['warn'][utilisateur] = 1
-				Savebdd();
-				message.channel.send("Tu as à présent " + bdd['warn'][utilisateur] + " avertissement !";
-							
-			}
-			else{
-			
-				bdd['warn'][utilisateur]++
-				Savebdd();
-				message.channel.send("Tu as à présent " + bdd['warn'][utilisateur] + " avertissements !";
-				
-			}
-		
-		}
-	
-	}
+            if (!message.mentions.users.first()) return;
+            utilisateur = message.mentions.users.first().id
 
+            if (bdd["warn"][utilisateur] == 2) {
+
+                delete bdd["warn"][utilisateur]
+                message.guild.members.ban(utilisateur)
+
+            }
+            else {
+                if (!bdd["warn"][utilisateur]) {
+                    bdd["warn"][utilisateur] = 1
+                    Savebdd();
+                    message.channel.send("Tu as a présent " + bdd["warn"][utilisateur] + " avertissement(s)");
+                }
+                else {
+                    bdd["warn"][utilisateur]++
+                    Savebdd();
+                    message.channel.send("Tu as a présent " + bdd["warn"][utilisateur] + " avertissements");
+
+                }
+            }
+        }
     }
-						     if(message.content.startsWith("!stats")){
+    // commande de stats
+    if (message.content.startsWith("!stats")) {
         let onlines = message.guild.members.cache.filter(({ presence }) => presence.status !== 'offline').size;
         let totalmembers = message.guild.members.cache.size;
         let totalservers = bot.guilds.cache.size;
-        let totalbots =  message.guild.members.cache.filter(member => member.user.bot).size;
+        let totalbots = message.guild.members.cache.filter(member => member.user.bot).size;
         let totalrole = message.guild.roles.cache.get('701156465515167755').members.map(member => member.user.tag).length;
 
         const monembed = new Discord.MessageEmbed()
@@ -127,9 +121,9 @@ bot.on("message", message => {
             .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
 
         message.channel.send(monembed);
-	}
-				//LEVEL
+    }
 
+    //LEVEL
 
     if (message.content.startsWith('!lvl')) {
         if (bdd["statut-level"] == true) {
