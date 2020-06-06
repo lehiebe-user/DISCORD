@@ -183,7 +183,29 @@ bot.on("message", async message => {
             }
         }
     }
-    
+     if(message.content.startsWith('!youtube')){
+        const data = await fetch('https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UCWqPk07TBQAKy695NJMnlZg&key=AIzaSyDWDZMYQwGq5ON1u7s4ZNloxp0U5MRw0zo').then(response => response.json());
+        console.log(data)
+        const monembed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Youtube')
+            .setURL('https://discord.js.org/')
+            .setAuthor('Mon Bot discord', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
+            .setDescription('Voici les statistiques youtube')
+            .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+            .addFields(
+                { name: 'Nombre d\'abonnés', value: data.items[0].statistics.subscriberCount, inline: true },
+                { name: 'Nombre de vidéos : ', value: data.items[0].statistics.videoCount, inline: true },
+                { name: 'Nombre de vues sur la chaîne : ', value: data.items[0].statistics.viewCount, inline: true },
+                // { name: 'Nombres de bots sur le serveur : ', value: totalbots, inline: true },
+                // { name: 'Nombre d\'arrivants : ', value: totalrole, inline: true },
+            )
+            .setImage('https://i.imgur.com/wSTFkRM.png')
+            .setTimestamp()
+            .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
+
+        message.channel.send(monembed);
+    }
 })
 function addRandomInt(member) {
     bdd["coins-utilisateurs"][member.id] = bdd["coins-utilisateurs"][member.id] + Math.floor(Math.random() * (4 - 1) + 1);
