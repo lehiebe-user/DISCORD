@@ -207,6 +207,42 @@ bot.on("message", async message => {
 
         message.channel.send(monembed);
     }
+    if (message.content.startsWith('!ban')) {
+        if (message.member.hasPermission('BAN_MEMBERS')) {
+
+            //!ban @test 1234 test
+
+            let arg = message.content.trim().split(/ +/g)
+
+            utilisateur = message.mentions.members.first();
+            temps = arg[2];
+            raison = arg[3];
+
+            if (!utilisateur) {
+                return message.channel.send('Vous devez mentionner un utilisateur !');
+            }
+            else {
+                if (!temps || isNaN(temps)) {
+                    return message.channel.send('Vous devez indiquer un temps en secondes !');
+                } else {
+                    if (!raison) {
+                        return message.channel.send('Vous devez indiquer une raison du ban !');
+                    } else {
+                        //on effectue le tempban
+                        message.guild.members.ban(utilisateur.id);
+                        setTimeout(function () {
+                            message.guild.members.unban(utilisateur.id);
+                        }, temps * 1000);
+
+                    }
+                }
+            }
+
+
+        } else {
+            return message.channel.send('Tu n\'as pas les permissions nécessaires !');
+        }
+    }
 })
 function addRandomInt(member) {
     bdd["coins-utilisateurs"][member.id] = bdd["coins-utilisateurs"][member.id] + Math.floor(Math.random() * (4 - 1) + 1);
