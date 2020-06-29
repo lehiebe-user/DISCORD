@@ -3,6 +3,7 @@ const token = require("./token.json");
 const fs = require("fs");
 const bdd = require("./bdd.json");
 const fetch = require('node-fetch');
+const ytdl = require("ytdl-core");
 
 const queue = new Map();
 
