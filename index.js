@@ -4,6 +4,8 @@ const fs = require("fs");
 const bdd = require("./bdd.json");
 const fetch = require('node-fetch');
 
+const queue = new Map();
+
 const bot = new Discord.Client();
 
 bot.on("ready", async () => {
