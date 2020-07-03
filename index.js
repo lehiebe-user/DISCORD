@@ -248,6 +248,23 @@ bot.on("message", async message => {
     }
 })
 
+bot.on("messageReactionAdd", (reaction, member) => {
+    if (reaction.emoji.name == "✅") {
+        reaction.message.channel.send('Tu as réagi : ✅');
+        var channel_ticket = reaction.message.guild.channels.create('ticket', {
+            type: 'text',
+            parent: "699308964575314043",
+            permissionOverwrites: [{
+                id: reaction.message.guild.id,
+                deny: ['SEND_MESSAGES'],
+                allow: ['ADD_REACTIONS']
+            }]
+        }).then(channel_ticket => {
+            channel_ticket.send("Channel crée !")
+        })
+    }
+})
+
    //Musique
     bot.on("message", async message => {
         if (message.author.bot) return;
