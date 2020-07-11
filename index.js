@@ -265,6 +265,11 @@ bot.on("messageReactionAdd", (reaction, member) => {
     }
 })
 
+bot.on("guildCreate", guild => {
+    bdd[guild.id] = {}
+    Savebdd()
+})
+
    //Musique
     bot.on("message", async message => {
         if (message.author.bot) return;
