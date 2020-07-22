@@ -5,7 +5,11 @@ const bdd = require("./bdd.json");
 const fetch = require('node-fetch');
 const ytdl = require("ytdl-core");
 
+const list = require("./youtube.json");
+
 const queue = new Map();
+
+const search = require('youtube-search');
 
 const bot = new Discord.Client();
 
