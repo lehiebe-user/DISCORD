@@ -66,6 +66,33 @@ bot.on("message", async message => {
 
     if (message.author.bot) return;
 
+    if(bdd[message.guild.id]["prefix"]){
+        prefix = bdd[message.guild.id]["prefix"]
+    }else{
+        prefix = "!"
+    }
+    
+
+    if (message.content.startsWith(prefix + "config")) {
+        
+        let arg = message.content.trim().split(/ +/g)
+        console.log(arg)
+        if(!arg[1]){
+            return message.channel.send(`Vous devez indiquer quel section souhaitez vous configurer`)
+        }
+        else if (arg[1] == "prefix"){
+            if(!arg[2]){
+                return message.channel.send(`Vous devez indiquer un prefix`)
+            }
+            else{
+                bdd[message.guild.id]["prefix"] = arg[2]
+                Savebdd();
+                return message.channel.send(`Le prefix ${arg[2]} à bien été sauvegardé !`);
+            }
+        }
+
+    }
+    
     if (message.content.startsWith("!clear")) {
         // message.delete();
         if (message.member.hasPermission('MANAGE_MESSAGES')) {
