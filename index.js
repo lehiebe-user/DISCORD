@@ -5,6 +5,8 @@ const bdd = require("./bdd.json");
 const fetch = require('node-fetch');
 const ytdl = require("ytdl-core");
 
+const CronJob = require('cron').CronJob;
+
 const list = require("./youtube.json");
 
 const queue = new Map();
@@ -12,6 +14,12 @@ const queue = new Map();
 const search = require('youtube-search');
 
 const bot = new Discord.Client();
+
+var job = new CronJob('* * * * *', async function() {
+    const data = await fetch('https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UCWqPk07TBQAKy695NJMnlZg&key='+token.youtube).then(response => response.json());
+        bot.channels.cache.get('738660606621777940').setName('youtube│'+ data.items[0].statistics.subscriberCount + 'abos')
+  }, null, true, 'America/Los_Angeles');
+job.start();
 
 bot.on("ready", async () => {
     console.log("Le bot est allumé")
