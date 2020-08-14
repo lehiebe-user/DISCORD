@@ -20,11 +20,15 @@ var job = new CronJob('* * * * *', async function () {
 job.start();
 
 bot.on("ready", async () => {
+    
+    let statuts = bdd.stats
+    setInterval(function() {
+        let stats = statuts[Math.floor(Math.random()*statuts.length)];
+        bot.user.setActivity(stats, {type: "STREAMING"})
+    }, 10000)
+    
     console.log("Le bot est allumé")
     bot.user.setStatus("dnd");
-    setTimeout(() => {
-        bot.user.setActivity("développer mon bot");
-    }, 100)
     const opts = {
         maxResults: 1000,
         key: token.youtube,
