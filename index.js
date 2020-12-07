@@ -106,6 +106,37 @@ bot.on("guildMemberAdd", member => {
 
 })
 
+    /***********************************************
+    ************ Enregistrer une image *************
+    ************************************************/
+
+bot.on('message', async message => {
+    if (message.channel.id == bdd['channel-image']) {
+        if (message.member.user.bot) return;
+        if (message.attachments) {
+            message.attachments.forEach(a => {
+                download(a.url, message)
+            });
+        }
+    }
+
+})
+
+function download(url, message) {
+    var counter = 0;
+    fs.readdirSync("./images").forEach(file => {
+        counter++
+    })
+    counter++;
+    ext = request.get(url).path.split(".").pop()
+    request.get(url)
+        .on('error', console.error)
+        .pipe(fs.createWriteStream(`./images/${counter}.${ext}`));
+    imagebdd.push(`${counter}.${ext}`)
+    SaveImage();
+    message.channel.send(`Image ajoutée avec succès !`).then(message => message.delete({ timeout: 10000 }).catch(err => console.log(err)))
+}
+
 bot.on("message", async message => {
 
     if (message.author.bot) return;
