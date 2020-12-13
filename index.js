@@ -9,7 +9,7 @@ const list = require("./youtube.json");
 const queue = new Map();
 const search = require('youtube-search');
 const bot = new Discord.Client();
-
+const imagebdd = require('./images.json')
 
 
     /****************************************************
@@ -137,6 +137,17 @@ function download(url, message) {
     message.channel.send(`Image ajoutée avec succès !`).then(message => message.delete({ timeout: 10000 }).catch(err => console.log(err)))
 }
 
+bot.on("message", async message => {
+    if (message.content == "!image") {
+        if (message.member.user.bot) return;
+        var counter = 0;
+        imagebdd.forEach(file => {
+            counter++
+        })
+        random = Math.floor(Math.random() * counter);
+        message.channel.send({ files: [`./images/${imagebdd[random]}`] });
+    }
+});
 bot.on("message", async message => {
 
     if (message.author.bot) return;
@@ -418,6 +429,12 @@ bot.on("guildCreate", guild => {
     ********************************************/
 function Savebdd() {
     fs.writeFile("./bdd.json", JSON.stringify(bdd, null, 4), (err) => {
+        if (err) message.channel.send("Une erreur est survenue.");
+    });
+}
+
+function SaveImage() {
+    fs.writeFile("./images.json", JSON.stringify(imagebdd, null, 4), (err) => {
         if (err) message.channel.send("Une erreur est survenue.");
     });
 }
