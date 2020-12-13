@@ -1,4 +1,10 @@
 {
+    "stats": [
+        "1",
+        "2",
+        "3",
+        "soleil"
+    ],
     "warn": {},
     "coins-utilisateurs": {
     },
@@ -7,7 +13,7 @@
     "message-bienvenue": "Bienvenue a toi sur le serveur de test !",
     "statut-level": true,
     "699308964575314041": {
-        "prefix": "/"
+        "prefix": "/",
         "test": "test"
     }
 }
