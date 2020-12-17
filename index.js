@@ -240,6 +240,7 @@ bot.on("message", async message => {
         }
         if (bdd["warn"][utilisateur.id] == 2) {
             delete bdd["warn"][utilisateu.id]
+            Savebdd();
             return message.guild.members.ban(utilisateur);
 
         } else {
