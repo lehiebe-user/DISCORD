@@ -93,6 +93,45 @@ bot.on("ready", async () => {
     }, 2000)
 });
 
+    /***********************************************
+    ******************* Captcha ********************
+    ************************************************/
+
+bot.on("guildMemberAdd", async member => {
+    member.roles.add('701156465515167755');
+    bdd["captcha"][member.id] = { "value": Math.floor(Math.random() * Math.floor(10000)), "statut": false }
+    Savebdd();
+    bot.channels.cache.get('789256968657043488').send(`Bonjour ${member} ! Ton code de captcha est : ${bdd["captcha"][member.id]["value"]}`)
+})
+bot.on('message', async message => {
+    if(message.author.bot || message.member.permissions.has('ADMINISTRATOR')) return;
+    if(message.channel.id == "789256968657043488") {
+        message.delete();
+        if(!bdd["captcha"][message.member.id]["statut"]){
+            if (isNaN(message.content)) {
+                return message.channel.send('Tu dois indiquer la valeur de la captcha envoyée au dessus').then(message=> message.delete({timeout: 15000}));
+            }
+            else {
+                if(message.content == bdd["captcha"][message.member.id]["value"]){
+                    bdd["captcha"][message.member.id]["statut"] = true;
+                    Savebdd();
+                    message.member.roles.remove('701156465515167755');
+                    message.member.roles.add('786630910862295043');
+
+                }
+                else{
+                    return message.channel.send('Tu dois indiquer la valeur de la captcha envoyée au dessus').then(message=> message.delete({timeout: 15000}));
+                }
+            }
+        }
+    }
+})
+bot.on('guildMemberRemove', async member => {
+    delete bdd["captcha"][member.id]
+    Savebdd();
+})
+
+
 bot.on("guildMemberAdd", member => {
     /*****************************************
     ************ MESSAGE BIENVENUE ***********
