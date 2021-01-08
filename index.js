@@ -187,6 +187,46 @@ bot.on("message", async message => {
         message.channel.send({ files: [`./images/${imagebdd[random]}`] });
     }
 });
+
+bot.commands = new Discord.Collection();
+// bot.aliases = new Discord.Collection();
+fs.readdir("./commands/", (err, files) => {
+
+    if (err) console.log(err);
+
+    let jsfile = files.filter(f => f.split(".").pop() === "js");
+
+    if (jsfile.lenght <= 0) {
+        return console.log("Impossible de trouver des commandes");
+    }
+
+    jsfile.forEach((f, i) => {
+        let pull = require(`./commands/${f}`);
+
+        bot.commands.set(pull.config.name, pull);
+
+        // pull.config.aliases.forEach(alias => {
+
+        //     bot.aliases.set(alias, pull.config.name)
+
+        // });
+    });
+});
+bot.on("message", async message => {
+
+    if (message.author.bot || message.channel.type === "dm") return;
+    
+    let prefix = "!";
+    let messagearray = message.content.split(" ")
+    let cmd = messagearray[0];
+    let args = message.content.trim().split(/ +/g);
+
+    if (!message.content.startsWith(prefix)) return;
+    let commandfile = bot.commands.get(cmd.slice(prefix.length))
+    if (commandfile) commandfile.run(bot, message, args);
+});
+
+
 bot.on("message", async message => {
 
     if (message.author.bot) return;
