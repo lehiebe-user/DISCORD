@@ -196,7 +196,7 @@ fs.readdir("./commands/", (err, files) => {
 
     let jsfile = files.filter(f => f.split(".").pop() === "js");
 
-    if (jsfile.lenght <= 0) {
+    if (jsfile.length <= 0) {
         return console.log("Impossible de trouver des commandes");
     }
 
