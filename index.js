@@ -8,7 +8,7 @@ const CronJob = require('cron').CronJob;
 const list = require("./youtube.json");
 const queue = new Map();
 const search = require('youtube-search');
-const bot = new Discord.Client();
+const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION']});
 const imagebdd = require('./images.json')
 
 
