@@ -15,5 +15,9 @@
     "699308964575314041": {
         "prefix": "/",
         "test": "test"
-    }
+    },
+    "channel-events": "",
+    "participants-event-1k": [    ],
+    "message-event-1k": ""
+    
 }
