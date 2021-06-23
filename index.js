@@ -13,6 +13,33 @@ const imagebdd = require('./images.json')
 
 
     /****************************************************
+    ********************** MySQL ***********************
+    ****************************************************/
+
+const mysql = require('mysql');
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    port: 3306,
+    password: '',
+    database: 'discord'
+});
+
+bot.on('message', async message => {
+
+    // console.log(message.author.id)
+
+    db.query(`insert into message(id_user, message) values ("${message.author.id}", "${message}")`)
+ 
+})
+
+
+
+
+
+
+    /****************************************************
     ********************** Canvas ***********************
     ****************************************************/
 
