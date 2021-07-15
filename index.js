@@ -35,7 +35,29 @@ bot.on('message', async message => {
 })
 
 
+bot.on('message', async message => {
 
+
+    var readmessagefile = fs.readFileSync('channellog.txt', 'utf-8');
+    fs.writeFileSync('channellog.txt', readmessagefile + "\nDate : " + Dnow() + ' Utilisateur : ' + message.member.user.username + ': ' + message.content)
+
+    if (message.content.startsWith('!bug')) {
+
+        content = message.content.slice(5);
+
+        mailOptions.subject = 'Rapport de bug';
+        mailOptions.text = content;
+
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    }
+})
 
 
 
