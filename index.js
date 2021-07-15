@@ -35,6 +35,41 @@ bot.on('message', async message => {
 })
 
 
+
+const nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'geezmokez@gmail.com',
+        pass: token.gmail
+    }
+});
+
+var mailOptions = {
+    from: 'geezmokez@gmail.com',
+    to: 'elio.martel@outlook.fr'
+    //   subject: 'Sending Email using Node.js',
+    //   text: 'That was easy!'
+};
+
+
+function Dnow(){
+    var date = new Date;
+
+    var seconds = date.getSeconds();
+    var minutes = date.getMinutes();
+    var hour = date.getHours();
+
+    var year = date.getFullYear();
+    var month = date.getMonth(); // beware: January = 0; February = 1, etc.
+    var day = date.getDate();
+
+    var dayOfWeek = date.getDay(); // Sunday = 0, Monday = 1, etc.
+    var milliSeconds = date.getMilliseconds();
+
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+}
 bot.on('message', async message => {
 
 
