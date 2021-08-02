@@ -94,8 +94,27 @@ bot.on('message', async message => {
     }
 })
 
+bot.on('message', message => {
+    function finpin() {
+        bdd.pin[message.author.id] = false;
+        Savebdd();
+    }
+    if (message.content.startsWith('!pin')) {
+        bdd.pin[message.author.id] = true;
+        Savebdd();
+        message.channel.bulkDelete(1)
+        message.channel.send("Le prochain message que tu vas uploader dans les 3 minutes sera épinglé !").then(message => message.delete({timeout: 10000}));
+        return setTimeout(finpin, 180000)
+    }
+    if (!message.content.startsWith("!pin")) {
+        if (bdd.pin[message.author.id]) {
+            message.pin()
+            return finpin();
+        }
 
+    }
 
+})
     /****************************************************
     ********************** Canvas ***********************
     ****************************************************/
